@@ -52,6 +52,13 @@ Or use the included config file:
 python3 -m src.ops_monitor --config tests/sample_monitor_targets.txt
 ```
 
+### Run from Docker
+
+```bash
+docker build -t github-actions-showcase .
+docker run --rm github-actions-showcase https://example.com
+```
+
 This prints a simple health summary for each URL and exits with a non-zero status if any monitored endpoint is down.
 
 ## Workflow highlights
