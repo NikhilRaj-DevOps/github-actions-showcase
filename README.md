@@ -8,6 +8,7 @@ This repository is a compact example project designed to demonstrate practical G
 
 - CI workflow on push and pull request
 - Python test matrix across multiple versions
+- Security scanning in the pipeline
 - Build packaging and archive generation
 - Tag-based release automation
 - GitHub-hosted runner best practices
@@ -34,6 +35,6 @@ python3 -m unittest discover -s tests -v
 
 ## Workflow highlights
 
-- `ci.yml` runs validation, unit tests, and archive creation.
-- `release.yml` publishes a GitHub release when a `v*` tag is pushed.
+- `ci.yml` runs validation, security scanning, unit tests, and archive creation.
+- `release.yml` publishes a GitHub release when a `v*` tag is pushed and includes generated changelog notes.
 - The release path demonstrates package distribution without relying on the deprecated artifact upload step.
