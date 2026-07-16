@@ -9,20 +9,23 @@ This repository is a compact example project designed to demonstrate practical G
 - CI workflow on push and pull request
 - Python test matrix across multiple versions
 - Security scanning in the pipeline
-- Build packaging and archive generation
-- Tag-based release automation
+- Mid-level Python application for SRE/DevOps-style health checks
+- Build packaging and archive generation- Scheduled monitoring workflow for live health-check execution- Tag-based release automation
 - GitHub-hosted runner best practices
 
 ## Project structure
 
 ```text
-.github/workflows/
-  ci.yml
-  release.yml
+.github/
+  workflows/
+    ci.yml
+    release.yml
 src/
   greeter.py
+  ops_monitor.py
 tests/
   test_greeter.py
+  test_ops_monitor.py
 ```
 
 ## Local verification
@@ -32,6 +35,20 @@ Run the tests with:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+
+### Run the SRE/DevOps monitor CLI
+
+```bash
+python3 -m src.ops_monitor https://example.com https://status.example.org
+```
+
+Or use the included config file:
+
+```bash
+python3 -m src.ops_monitor --config tests/sample_monitor_targets.txt
+```
+
+This prints a simple health summary for each URL and exits with a non-zero status if any monitored endpoint is down.
 
 ## Workflow highlights
 
