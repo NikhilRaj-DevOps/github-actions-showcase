@@ -13,6 +13,7 @@ This repository is a compact example project designed to demonstrate practical G
 - Build packaging and archive generation
 - Scheduled monitoring workflow for live health-check execution
 - Tag-based release automation
+- Docker image publishing to GitHub Container Registry
 - GitHub-hosted runner best practices
 
 ## Project structure
@@ -58,6 +59,10 @@ python3 -m src.ops_monitor --config tests/sample_monitor_targets.txt
 docker build -t github-actions-showcase .
 docker run --rm github-actions-showcase https://example.com
 ```
+
+### Publish the image to GHCR
+
+The repository includes a GitHub Actions workflow at [.github/workflows/docker-publish.yml](.github/workflows/docker-publish.yml) that builds and publishes the container image to GitHub Container Registry on pushes to `main` and on version tags.
 
 This prints a simple health summary for each URL and exits with a non-zero status if any monitored endpoint is down.
 
