@@ -10,7 +10,9 @@ This repository is a compact example project designed to demonstrate practical G
 - Python test matrix across multiple versions
 - Security scanning in the pipeline
 - Mid-level Python application for SRE/DevOps-style health checks
-- Build packaging and archive generation- Scheduled monitoring workflow for live health-check execution- Tag-based release automation
+- Build packaging and archive generation
+- Scheduled monitoring workflow for live health-check execution
+- Tag-based release automation
 - GitHub-hosted runner best practices
 
 ## Project structure
@@ -20,12 +22,14 @@ This repository is a compact example project designed to demonstrate practical G
   workflows/
     ci.yml
     release.yml
+    monitor.yml
 src/
   greeter.py
   ops_monitor.py
 tests/
   test_greeter.py
   test_ops_monitor.py
+  sample_monitor_targets.txt
 ```
 
 ## Local verification
@@ -53,5 +57,6 @@ This prints a simple health summary for each URL and exits with a non-zero statu
 ## Workflow highlights
 
 - `ci.yml` runs validation, security scanning, unit tests, and archive creation.
+- `monitor.yml` runs the health-check CLI on a scheduled cadence and supports manual workflow dispatch.
 - `release.yml` publishes a GitHub release when a `v*` tag is pushed and includes generated changelog notes.
 - The release path demonstrates package distribution without relying on the deprecated artifact upload step.
