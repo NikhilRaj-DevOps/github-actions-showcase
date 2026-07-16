@@ -1,0 +1,10 @@
+# Default owners for the repository
+* @NikhilRaj-DevOps
+
+# Repository automation and workflows
+.github/ @NikhilRaj-DevOps
+
+# Python source
+src/ @NikhilRaj-DevOps
+
+tests/ @NikhilRaj-DevOps
