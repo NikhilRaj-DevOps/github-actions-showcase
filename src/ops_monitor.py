@@ -12,6 +12,7 @@ import sys
 import time
 from typing import Iterable, List
 from urllib.error import URLError, HTTPError
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 
@@ -34,10 +35,14 @@ class ServiceMonitor:
         self.timeout_seconds = timeout_seconds
 
     def check_url(self, url: str) -> CheckResult:
+        parsed = urlparse(url)
+        if parsed.scheme not in {"http", "https"}:
+            raise ValueError("Only HTTP(S) URLs are supported for health checks")
+
         request = Request(url, headers={"User-Agent": "github-actions-showcase-monitor/1.0"})
         start = time.perf_counter()
         try:
-            with urlopen(request, timeout=self.timeout_seconds) as response:
+            with urlopen(request, timeout=self.timeout_seconds) as response:  # nosec B310 - intentional outbound HTTP(S) health check
                 status_code = int(response.getcode())
                 elapsed_ms = int((time.perf_counter() - start) * 1000)
                 return CheckResult(

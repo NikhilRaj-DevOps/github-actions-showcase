@@ -10,6 +10,11 @@ class OpsMonitorTests(unittest.TestCase):
         targets = load_targets(config_path)
         self.assertEqual(targets, ["https://example.com", "https://status.example.org"])
 
+    def test_invalid_scheme_is_rejected(self):
+        monitor = ServiceMonitor()
+        with self.assertRaises(ValueError):
+            monitor.check_url("file:///tmp/test.txt")
+
     def test_check_result_success_status(self):
         result = CheckResult(url="https://example.com", status_code=200, response_time_ms=120, available=True)
         self.assertEqual(result.status_label, "UP")
