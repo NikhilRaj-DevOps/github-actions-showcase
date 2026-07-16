@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-release:
+    name: Publish GitHub release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create release archive
+        run: zip -r github-actions-showcase-${{ github.ref_name }}.zip src tests README.md
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: github-actions-showcase-${{ github.ref_name }}.zip
