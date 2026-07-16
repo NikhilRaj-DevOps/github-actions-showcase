@@ -15,11 +15,23 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          echo "## What's changed" >> "$GITHUB_OUTPUT"
+          echo "" >> "$GITHUB_OUTPUT"
+          git log --pretty=format:"- %s" "$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD)"..HEAD >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Create release archive
-        run: zip -r github-actions-showcase-${{ github.ref_name }}.zip src tests README.md
+        run: zip -r github-actions-showcase-${{ github.ref_name }}.zip src tests README.md requirements.txt
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           files: github-actions-showcase-${{ github.ref_name }}.zip
+          body: ${{ steps.changelog.outputs.notes }}

@@ -1,5 +1,7 @@
 # GitHub Actions Showcase
 
+![CI](https://github.com/NikhilRaj-DevOps/github-actions-showcase/actions/workflows/ci.yml/badge.svg)
+
 This repository is a compact example project designed to demonstrate practical GitHub Actions usage in a real GitHub repo.
 
 ## What it showcases

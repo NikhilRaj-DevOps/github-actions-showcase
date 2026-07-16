@@ -1,0 +1,2 @@
+# This sample project intentionally keeps its Python dependency list minimal.
+# Pip caching still works and can be expanded as dependencies are added.
