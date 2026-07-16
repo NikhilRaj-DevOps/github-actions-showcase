@@ -58,8 +58,5 @@ jobs:
       - name: Create distribution archive
         run: zip -r github-actions-showcase.zip src tests README.md
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v5
-        with:
-          name: github-actions-showcase-artifact
-          path: github-actions-showcase.zip
+      - name: Confirm package creation
+        run: ls -lh github-actions-showcase.zip
