@@ -13,6 +13,7 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   promote:
@@ -25,6 +26,21 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+
+      - name: Download CI artifact
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: github-actions-showcase-${{ github.event.workflow_run.run_number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: ci-artifact
+
+      - name: Inspect downloaded artifact
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: |
+          ls -lh ci-artifact
+          unzip -l ci-artifact/github-actions-showcase.zip | head
 
       - name: Set up Python
         uses: actions/setup-python@v6
