@@ -7,6 +7,10 @@ on:
     types:
       - completed
 
+concurrency:
+  group: production-promotion
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
@@ -16,6 +20,7 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: production
+      url: https://example.com
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
