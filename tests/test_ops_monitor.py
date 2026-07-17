@@ -12,7 +12,7 @@ class OpsMonitorTests(unittest.TestCase):
             targets,
             [
                 "https://example.com",
-                "https://status.example.org",
+                "https://github.com",
                 "https://nikhilraj-devops.github.io",
             ],
         )

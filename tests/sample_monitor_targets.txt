@@ -1,3 +1,4 @@
+# Curated stable endpoints for scheduled monitor validation
 https://example.com
-https://status.example.org
+https://github.com
 https://nikhilraj-devops.github.io
