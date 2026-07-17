@@ -95,5 +95,13 @@ jobs:
       - name: Create distribution archive
         run: zip -r github-actions-showcase.zip src tests README.md requirements.txt
 
+      - name: Upload distribution artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-actions-showcase-${{ github.run_number }}
+          path: github-actions-showcase.zip
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Confirm package creation
         run: ls -lh github-actions-showcase.zip
