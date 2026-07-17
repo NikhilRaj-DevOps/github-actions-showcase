@@ -24,6 +24,8 @@ This repository is a compact example project designed to demonstrate practical G
     ci.yml
     release.yml
     monitor.yml
+    reusable-ci.yml
+    promote.yml
 src/
   greeter.py
   ops_monitor.py
@@ -68,7 +70,9 @@ This prints a simple health summary for each URL and exits with a non-zero statu
 
 ## Workflow highlights
 
-- `ci.yml` runs validation, security scanning, unit tests, and archive creation.
+- `ci.yml` is a lightweight entrypoint that calls the reusable pipeline logic in `reusable-ci.yml`.
+- `reusable-ci.yml` contains the real validation, security scanning, unit testing, and archive generation implementation.
 - `monitor.yml` runs the health-check CLI on a scheduled cadence and supports manual workflow dispatch.
+- `promote.yml` demonstrates a production-style promotion flow using a protected `production` environment.
 - `release.yml` publishes a GitHub release when a `v*` tag is pushed and includes generated changelog notes.
 - The release path demonstrates package distribution without relying on the deprecated artifact upload step.

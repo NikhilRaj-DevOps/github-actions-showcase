@@ -8,7 +8,14 @@ class OpsMonitorTests(unittest.TestCase):
     def test_load_targets_from_config_file(self):
         config_path = Path("tests/sample_monitor_targets.txt")
         targets = load_targets(config_path)
-        self.assertEqual(targets, ["https://example.com", "https://status.example.org"])
+        self.assertEqual(
+            targets,
+            [
+                "https://example.com",
+                "https://status.example.org",
+                "https://nikhilraj-devops.github.io",
+            ],
+        )
 
     def test_invalid_scheme_is_rejected(self):
         monitor = ServiceMonitor()

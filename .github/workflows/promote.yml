@@ -1,0 +1,32 @@
+name: Production Promotion
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    name: Promote to production
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Confirm promotion inputs
+        run: |
+          echo "Promoting validated change to the production environment"
+          echo "Run ID: ${{ github.run_id }}"

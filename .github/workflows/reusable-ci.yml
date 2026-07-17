@@ -1,0 +1,99 @@
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      python-versions:
+        description: Python versions for the test matrix
+        required: false
+        type: string
+        default: '["3.10", "3.12"]'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+
+      - name: Verify Python syntax
+        run: python3 -m compileall src tests
+
+  security-scan:
+    name: Security scan
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+
+      - name: Install security tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install bandit pip-audit
+
+      - name: Run Bandit
+        run: bandit -r src
+
+      - name: Run pip-audit
+        run: pip-audit -r requirements.txt
+
+  test:
+    name: Run unit tests
+    needs: validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ fromJSON(inputs.python-versions) }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
+
+  build-artifact:
+    name: Build artifact
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+
+      - name: Create distribution archive
+        run: zip -r github-actions-showcase.zip src tests README.md requirements.txt
+
+      - name: Confirm package creation
+        run: ls -lh github-actions-showcase.zip
