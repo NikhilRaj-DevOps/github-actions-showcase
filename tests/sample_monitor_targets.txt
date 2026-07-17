@@ -1,2 +1,3 @@
 https://example.com
 https://status.example.org
+https://nikhilraj-devops.github.io
