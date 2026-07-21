@@ -50,9 +50,13 @@ flowchart LR
     E --> G
     F --> G
     G --> H[Publish artifact]
-    H --> I[Production promotion]
-    I --> J[Manual approval gate]
-    J --> K[Production environment]
+    H --> I[Deploy to QA]
+    I --> J[QA validation]
+    J --> K[Deploy to Pre-prod]
+    K --> L[Pre-prod validation]
+    L --> M[Production promotion]
+    M --> N[Manual approval gate]
+    N --> O[Production environment]
 ```
 
 ## Local verification
