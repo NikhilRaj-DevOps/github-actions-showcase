@@ -1,0 +1,42 @@
+name: Deploy to QA
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+concurrency:
+  group: deploy-qa
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  deploy-qa:
+    name: Deploy to QA
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: qa
+      url: https://example-qa.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Download CI artifact
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: github-actions-showcase-${{ github.event.workflow_run.run_number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: ci-artifact
+
+      - name: Confirm QA deployment
+        run: |
+          echo "Deploying validated build to QA"
+          echo "Run ID: ${{ github.run_id }}"

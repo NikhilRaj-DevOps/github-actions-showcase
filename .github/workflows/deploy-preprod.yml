@@ -1,0 +1,42 @@
+name: Deploy to Pre-Prod
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy to QA"]
+    types:
+      - completed
+
+concurrency:
+  group: deploy-preprod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  deploy-preprod:
+    name: Deploy to Pre-Prod
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: pre-prod
+      url: https://example-preprod.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Download QA deployment artifact
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: github-actions-showcase-${{ github.event.workflow_run.run_number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: ci-artifact
+
+      - name: Confirm Pre-Prod deployment
+        run: |
+          echo "Deploying validated build to Pre-Prod"
+          echo "Run ID: ${{ github.run_id }}"
