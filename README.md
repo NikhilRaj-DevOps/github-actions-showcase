@@ -98,5 +98,6 @@ This prints a simple health summary for each URL and exits with a non-zero statu
 - `reusable-ci.yml` contains the real validation, security scanning, unit testing, and archive generation implementation.
 - `monitor.yml` runs the health-check CLI on a scheduled cadence and supports manual workflow dispatch.
 - `promote.yml` demonstrates a production-style promotion flow using a protected `production` environment.
+- `deploy-qa.yml` and `deploy-preprod.yml` target the `qa` and `pre-prod` environments so their deployment gates can be protected through GitHub repository settings.
 - `release.yml` publishes a GitHub release when a `v*` tag is pushed and includes generated changelog notes.
 - The release path demonstrates package distribution without relying on the deprecated artifact upload step.
