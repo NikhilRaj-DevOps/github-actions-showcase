@@ -36,6 +36,25 @@ tests/
   sample_monitor_targets.txt
 ```
 
+## CI/CD flow
+
+```mermaid
+flowchart LR
+    A[Push or PR to main] --> B[CI workflow]
+    B --> C[Validate]
+    B --> D[Security scan]
+    B --> E[Unit tests]
+    B --> F[Build artifact]
+    C --> G[Reusable CI workflow]
+    D --> G
+    E --> G
+    F --> G
+    G --> H[Publish artifact]
+    H --> I[Production promotion]
+    I --> J[Manual approval gate]
+    J --> K[Production environment]
+```
+
 ## Local verification
 
 Run the tests with:
