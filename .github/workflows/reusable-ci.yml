@@ -96,7 +96,7 @@ jobs:
         run: zip -r github-actions-showcase.zip src tests README.md requirements.txt
 
       - name: Upload distribution artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: github-actions-showcase-${{ github.run_number }}
           path: github-actions-showcase.zip
